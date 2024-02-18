@@ -50,11 +50,34 @@ SET default_table_access_method = heap;
 CREATE TABLE public.filler (
     fill integer NOT NULL,
     name character varying(30),
-    final boolean
+    final boolean,
+    filler_id integer NOT NULL
 );
 
 
 ALTER TABLE public.filler OWNER TO freecodecamp;
+
+--
+-- Name: filler_pr_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
+--
+
+CREATE SEQUENCE public.filler_pr_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.filler_pr_seq OWNER TO freecodecamp;
+
+--
+-- Name: filler_pr_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
+--
+
+ALTER SEQUENCE public.filler_pr_seq OWNED BY public.filler.filler_id;
+
 
 --
 -- Name: galaxy; Type: TABLE; Schema: public; Owner: freecodecamp
@@ -205,6 +228,13 @@ ALTER SEQUENCE public.star_star_id_seq OWNED BY public.star.star_id;
 
 
 --
+-- Name: filler filler_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.filler ALTER COLUMN filler_id SET DEFAULT nextval('public.filler_pr_seq'::regclass);
+
+
+--
 -- Name: galaxy galaxy_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
 --
 
@@ -236,9 +266,9 @@ ALTER TABLE ONLY public.star ALTER COLUMN star_id SET DEFAULT nextval('public.st
 -- Data for Name: filler; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.filler VALUES (1, 'medo', true);
-INSERT INTO public.filler VALUES (2, 'medos', true);
-INSERT INTO public.filler VALUES (3, 'medoss', true);
+INSERT INTO public.filler VALUES (1, 'medo', true, 1);
+INSERT INTO public.filler VALUES (2, 'medos', true, 2);
+INSERT INTO public.filler VALUES (3, 'medoss', true, 3);
 
 
 --
@@ -311,6 +341,13 @@ INSERT INTO public.star VALUES (7, 'nasssssss', true, 233, 7);
 
 
 --
+-- Name: filler_pr_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
+--
+
+SELECT pg_catalog.setval('public.filler_pr_seq', 3, true);
+
+
+--
 -- Name: galaxy_galaxy_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
 --
 
@@ -344,6 +381,14 @@ SELECT pg_catalog.setval('public.star_star_id_seq', 7, true);
 
 ALTER TABLE ONLY public.filler
     ADD CONSTRAINT filler_fill_key UNIQUE (fill);
+
+
+--
+-- Name: filler filler_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.filler
+    ADD CONSTRAINT filler_pkey PRIMARY KEY (filler_id);
 
 
 --
